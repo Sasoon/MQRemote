@@ -1,0 +1,3 @@
+rootProject.name = 'MQRemote'
+
+include ':app'

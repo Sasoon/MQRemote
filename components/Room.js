@@ -1,24 +1,26 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { Button } from 'react-native-elements';
-
-// Button styles
-const RoomButton = props => <Button color='red' buttonStyle={styles.roomButton} {...props} />;
+import { Image, TouchableNativeFeedback, Button, StyleSheet, Text, View } from "react-native";
 
 export class Room extends React.Component {
+  Start = () => {
+    console.log("woot");
+    NativeModules.Wol.Start();
+    console.log("woot");
+  };
+
   render() {
     return (
-      <RoomButton roomNumber="" title={this.props.roomNumber} />    )
+      <View style={styles.roomButton}>
+        <Button onPress={this.Start}  title={this.props.roomNumber} />
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   roomButton: {
-    width: 100,
-    backgroundColor: 'red',
-    color: 'green',
-    justifyContent: "center",
-    alignItems: "center",
+    margin: 15,
+    width: 150,
   }
 });
 

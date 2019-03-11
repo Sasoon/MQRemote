@@ -1,31 +1,42 @@
-import React, { Component } from 'react';
-import { Container, Content, ListItem, CheckBox, Text, Body } from 'react-native';
-export class Toggle extends React.Component {
+import React from 'react';
+//import react in our code.
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked: true
-        }
-    }
+import { Switch, Text, View, StyleSheet } from 'react-native';
+//import all the components we are going to use.
 
-    render() {
-        return (
-            <Container>
-                <Content>
-                    <ListItem>
-                        <CheckBox
-                            checked={this.state.checked}
-                            onPress={() => this.setState({checked: !this.state.checked})}
-                        />
-                        <Body>
-                        <Text>Finish list Screen</Text>
-                        </Body>
-                    </ListItem>
-                </Content>
-            </Container>
-        );
-    }
+export default class Toggle extends React.Component {
+  //Initial state false for the switch. You can change it to true just to see.
+  state = { switchValue: false };
+
+  toggleSwitch = value => {
+    //onValueChange of the switch this function will be called
+    this.setState({ switchValue: value });
+    //state changes according to switch
+    //which will result in re-render the text
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        {/*Text to show the text according to switch condition*/}
+        <Text>{this.state.switchValue ? 'WAKE ON LAN' : 'SHUTDOWN'}</Text>
+
+        {/*Switch with value set in constructor*/}
+        {/*onValueChange will be triggered after switch condition changes*/}
+        <Switch
+          style={{ marginTop: 30 }}
+          onValueChange={this.toggleSwitch}
+          value={this.state.switchValue}
+        />
+      </View>
+    );
+  }
 }
 
-export default Toggle;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

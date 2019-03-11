@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import {
   NativeModules,
   Image,
+  Button,
   StatusBar,
   StyleSheet,
   Text,
-  View
+  View, 
+  Dimensions,
+  Switch,
 } from "react-native";
-import { Button, Header } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
 import Room from "./components/Room";
 import Toggle from "./components/Toggle";
 
@@ -17,7 +18,9 @@ const bg =
   "https://staff.mq.edu.au/media/photos/shared_identity_three-colour_gradient.jpg";
 const icon =
   "https://webresources.mq.edu.au/mq_templates/global/images/2015/logo.png";
-
+const width = Dimensions.get('window').width; //full width
+const height = Dimensions.get('window').height; //full height
+state = { switchValue: false };
 
 export default class App extends Component {
   constructor(props) {
@@ -28,15 +31,9 @@ export default class App extends Component {
     this.updateStatus();
     console.log("woot");
   }
-  Start = () => {
-    console.log("woot");
-    NativeModules.Wol.Start();
-    console.log("woot");
-  };
   turnOn = () => {
     NativeModules.Wol.turnOn();
     this.updateStatus();
-    console.log("woot");
   };
   turnOff = () => {
     NativeModules.Wol.turnOff();
@@ -52,17 +49,15 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <Header backgroundColor="#A41F31"
-  centerComponent={{ text: 'MQRemote', style: { color: '#fff', fontSize: 30, fontWeight: 'bold', paddingBottom: 25 } }}
-/>
         <View style={styles.header}>
           <Image
             source={{ uri: icon }}
             style={{ height: 60, width: 120 }}
             resizeMode="contain"
           />
+          <Text style={styles.headerText}>MQRemote</Text>
         </View>
-        <View style={styles.container}>
+        <View style={styles.roomContainer}>
           <Room roomNumber="104" />
           <Room roomNumber="118" />
           <Room roomNumber="206" />
@@ -70,14 +65,9 @@ export default class App extends Component {
           <Room roomNumber="214" />
           <Room roomNumber="316" />
         </View>
-
-        <Text> Wol is {this.state.isOn ? "ON" : "OFF"} </Text>
-        <Button onPress={this.Start} title="Start" />
-        {!this.state.isOn ? (
-          <Button onPress={this.turnOn} title="Turn ON" />
-        ) : (
-          <Button onPress={this.turnOff} title="Turn OFF" />
-        )}
+        <View style={styles.switchContainer}>
+          <Toggle />
+        </View>
       </View>
     );
   }
@@ -86,13 +76,29 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#3F51B5',
+    width: width,
+    height: height,
+  },
+  roomContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    flex: 3,
+  },
+  switchContainer: {
+    flex: 3,
   },
   header: {
-    marginTop: STATUS_BAR_HEIGHT,
-    flex: 1,
-    paddingLeft: 15,
-    flexDirection: "row"
+    width: width,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+    fontSize: 30,
+    color: '#fff',
   }
 });

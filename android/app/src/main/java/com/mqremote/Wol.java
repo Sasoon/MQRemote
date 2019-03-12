@@ -9,13 +9,20 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-import java.io.*;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 public class Wol extends ReactContextBaseJavaModule  {
     private static Boolean isOn = false;
+    static RequestQueue requestQueue;
+    static String URL = "http://10.41.73.121:4567/";
+    ReactApplicationContext reactContext;
+
+
     public Wol(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -24,7 +31,7 @@ public class Wol extends ReactContextBaseJavaModule  {
     public void getStatus(
             Callback successCallback) {
         successCallback.invoke(null, isOn);
-        getReactApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        requestQueue = Volley.newRequestQueue(getReactApplicationContext().getApplicationContext());
     }
 
     @ReactMethod
@@ -45,98 +52,24 @@ public class Wol extends ReactContextBaseJavaModule  {
 
     //-------------NEW------------------
     @ReactMethod
-    public static void Start() {
-        List<Computer> list = new ArrayList<>();
-
-        String FILE_URL = "https://www.dropbox.com/s/ufs7o5e9s3nf367/list.txt?dl=1";
-        BufferedInputStream inputStream = null;
-        try {
-            inputStream = new BufferedInputStream(new URL(FILE_URL).openStream());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String text;
-        try
-        {
-            while ((text = reader.readLine()) != null) {
-                String[] split = text.split(",");
-                String ip = split[0];
-                String mac = split[1];
-                Computer computer = new Computer(ip, mac);
-                list.add(computer);
+    public static void Start(String room, Boolean toggled) {
+        String mode;
+        if(toggled)
+            mode = "WakeOnLan";
+        else
+            mode = "Shutdown";
+        String preparedURL = URL + mode + "?room=" + room;
+        StringRequest request = new StringRequest(Request.Method.GET, preparedURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for(Computer computer : list)
-        {
-            Wol.Wake(computer.mac, computer.ip);
-        }
-    }
-
-    static final int PORT = 9;
-
-    public static void Wake(String mac, String ip) {
-
-        String ipStr = ip;
-        String macStr = mac;
-
-        try {
-            byte[] macBytes = getMacBytes(macStr);
-            byte[] bytes = new byte[6 + 16 * macBytes.length];
-            for (int i = 0; i < 6; i++) {
-                bytes[i] = (byte) 0xff;
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
             }
-            for (int i = 6; i < bytes.length; i += macBytes.length) {
-                System.arraycopy(macBytes, 0, bytes, i, macBytes.length);
-            }
-
-            InetAddress address = InetAddress.getByName(ipStr);
-            DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, PORT);
-            DatagramSocket socket = new DatagramSocket();
-            System.out.println(mac + " " + ip);
-            socket.send(packet);
-            socket.close();
-
-            System.out.println("Wake-on-LAN packet sent.");
-        }
-        catch (Exception e) {
-            System.out.println("Failed to send Wake-on-LAN packet: " + e.toString());
-            System.exit(1);
-        }
-
+        });
+        requestQueue.add(request);
     }
-
-    private static byte[] getMacBytes(String macStr) throws IllegalArgumentException {
-        byte[] bytes = new byte[6];
-        String[] hex = macStr.split("([:-])");
-        if (hex.length != 6) {
-            throw new IllegalArgumentException("Invalid MAC address.");
-        }
-        try {
-            for (int i = 0; i < 6; i++) {
-                bytes[i] = (byte) Integer.parseInt(hex[i], 16);
-            }
-        }
-        catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid hex digit in MAC address.");
-        }
-        return bytes;
-    }
-}
-
-class Computer {
-    Computer(String ip, String mac)
-    {
-        this.ip = ip;
-        this.mac = mac;
-    }
-    String ip;
-    String mac;
 }

@@ -1,32 +1,15 @@
 import React from 'react';
-//import react in our code.
-
 import { Switch, Text, View, StyleSheet } from 'react-native';
-//import all the components we are going to use.
 
-export default class Toggle extends React.Component {
-  //Initial state false for the switch. You can change it to true just to see.
-  state = { switchValue: false };
-
-  toggleSwitch = value => {
-    //onValueChange of the switch this function will be called
-    this.setState({ switchValue: value });
-    //state changes according to switch
-    //which will result in re-render the text
-  };
-
+export class Toggle extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        {/*Text to show the text according to switch condition*/}
-        <Text>{this.state.switchValue ? 'WAKE ON LAN' : 'SHUTDOWN'}</Text>
-
-        {/*Switch with value set in constructor*/}
-        {/*onValueChange will be triggered after switch condition changes*/}
+      <View style={styles.toggleContainer}>
+        <Text style={styles.toggleText}>{this.props.switchValue ? 'WakeOnLan' : 'Shutdown'}</Text>
         <Switch
           style={{ marginTop: 30 }}
-          onValueChange={this.toggleSwitch}
-          value={this.state.switchValue}
+          onValueChange={this.props.toggleSwitch}
+          value={this.props.switchValue}
         />
       </View>
     );
@@ -34,9 +17,17 @@ export default class Toggle extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  toggleContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  toggleText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+    fontSize: 20
+  }
 });
+
+export default Toggle;

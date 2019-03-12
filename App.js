@@ -7,25 +7,28 @@ import {
   StyleSheet,
   Text,
   View, 
+  ImageBackground,
   Dimensions,
   Switch,
 } from "react-native";
+import Svg, { Path } from 'react-native-svg'
 import Room from "./components/Room";
 import Toggle from "./components/Toggle";
+import Logo from "./components/Logo";
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 const bg =
   "https://staff.mq.edu.au/media/photos/shared_identity_three-colour_gradient.jpg";
 const icon =
-  "https://webresources.mq.edu.au/mq_templates/global/images/2015/logo.png";
+  "https://i.imgur.com/CN0lorK.png";
 const width = Dimensions.get('window').width; //full width
 const height = Dimensions.get('window').height; //full height
-state = { switchValue: false };
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      switchValue: false,
       isOn: false
     };
     this.updateStatus();
@@ -46,27 +49,34 @@ export default class App extends Component {
       });
     });
   };
+  start = (roomNumber) => {
+    NativeModules.Wol.Start(roomNumber, this.state.switchValue);
+    console.log('Start method initialized')
+    console.log(roomNumber, this.state.switchValue)
+  };  
+  toggleSwitch = (switchValue) => {
+    this.setState({ switchValue: switchValue });
+  };  
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image
-            source={{ uri: icon }}
-            style={{ height: 60, width: 120 }}
-            resizeMode="contain"
-          />
-          <Text style={styles.headerText}>MQRemote</Text>
+          <Text style={styles.headerText}>MQRemote</Text>  
+          <Logo />     
         </View>
         <View style={styles.roomContainer}>
-          <Room roomNumber="104" />
-          <Room roomNumber="118" />
-          <Room roomNumber="206" />
-          <Room roomNumber="208" />
-          <Room roomNumber="214" />
-          <Room roomNumber="316" />
+        <ImageBackground source={{uri: bg}} style={{width: '100%', height: '100%'}}> 
+          <Room roomNumber="104" start={this.start} switchValue={this.state.switchValue}/>
+          <Room roomNumber="118" start={this.start} switchValue={this.state.switchValue}/>
+          <Room roomNumber="206" start={this.start} switchValue={this.state.switchValue}/>
+          <Room roomNumber="208" start={this.start} switchValue={this.state.switchValue}/>
+          <Room roomNumber="214" start={this.start} switchValue={this.state.switchValue}/>
+          <Room roomNumber="316" start={this.start} switchValue={this.state.switchValue}/>          
+        </ImageBackground>
         </View>
         <View style={styles.switchContainer}>
-          <Toggle />
+          <Toggle switchValue={this.state.switchValue} toggleSwitch={this.toggleSwitch} />
         </View>
       </View>
     );
@@ -76,7 +86,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3F51B5',
+    backgroundColor: '#EAE6DB',
     width: width,
     height: height,
   },
@@ -84,16 +94,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    flex: 3,
+    margin: 10,
   },
   switchContainer: {
-    flex: 3,
+    flex: 5,
   },
+  // Header styles
   header: {
-    width: width,
+    margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  headerImage: {
+    height: 100,
+    width: 200, 
+    marginLeft: 10,
+    alignSelf: 'flex-start',
   },
   headerText: {
     fontWeight: 'bold',

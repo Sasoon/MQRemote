@@ -1,13 +1,10 @@
 // this.props.switchValue is accessible here since we passed it as props to the component in parent App.js
 import React from "react";
 import { 
-  Image, 
   TouchableOpacity,
-  Button,
   StyleSheet, 
   Text, 
   View,  
-  NativeModules 
 } from "react-native";
 
 export class Room extends React.Component {

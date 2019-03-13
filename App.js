@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   NativeModules,
   Image,
-  Button,
   StatusBar,
   StyleSheet,
   Text,
@@ -14,39 +13,23 @@ import {
 import Room from "./components/Room";
 import Toggle from "./components/Toggle";
 
+// Variables
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 const bg =
   "https://staff.mq.edu.au/media/photos/shared_identity_three-colour_gradient.jpg";
 const icon =
   "https://i.imgur.com/CN0lorK.png";
-const width = Dimensions.get('window').width; //full width
-const height = Dimensions.get('window').height; //full height
+const width = Dimensions.get('window').width; 
+const height = Dimensions.get('window').height;
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       switchValue: false,
-      isOn: false
     };
-    this.updateStatus();
-    console.log("woot");
+    console.log("App loaded");
   }
-  turnOn = () => {
-    NativeModules.Wol.turnOn();
-    this.updateStatus();
-  };
-  turnOff = () => {
-    NativeModules.Wol.turnOff();
-    this.updateStatus();
-  };
-  updateStatus = () => {
-    NativeModules.Wol.getStatus((error, isOn) => {
-      this.setState({
-        isOn: isOn
-      });
-    });
-  };
   start = (roomNumber) => {
     NativeModules.Wol.Start(roomNumber, this.state.switchValue);
     console.log('Start method initialized')
@@ -84,6 +67,7 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
+  // App container
   container: {
     flex: 1,
     backgroundColor: '#EAE6DB',

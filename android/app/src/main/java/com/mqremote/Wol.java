@@ -1,6 +1,7 @@
 package com.mqremote;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -16,33 +17,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.logging.Logger;
+
 public class Wol extends ReactContextBaseJavaModule  {
     private static Boolean isOn = false;
     static RequestQueue requestQueue;
     static String URL = "http://10.41.73.121:4567/";
     ReactApplicationContext reactContext;
 
-
     public Wol(ReactApplicationContext reactContext) {
         super(reactContext);
-    }
-
-    @ReactMethod
-    public void getStatus(
-            Callback successCallback) {
-        successCallback.invoke(null, isOn);
+        Log.wtf("sdfsdfsdfsdf", "SDfdeuhgkwegrfwuyergfwjueyfgwjueyrf");
         requestQueue = Volley.newRequestQueue(getReactApplicationContext().getApplicationContext());
-    }
-
-    @ReactMethod
-    public void turnOn() {
-        isOn = true;
-        System.out.println("Wol is turn ON");
-    }
-    @ReactMethod
-    public void turnOff() {
-        isOn = false;
-        System.out.println("Wol is turn OFF");
     }
 
     @Override

@@ -19,14 +19,14 @@ export class Toggle extends React.Component {
 const styles = StyleSheet.create({
   toggleContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   toggleText: {
-    color: '#fff',
+    color: '#000',
     fontWeight: 'bold',
     fontFamily: 'Roboto',
-    fontSize: 20
+    fontSize: 30
   }
 });
 

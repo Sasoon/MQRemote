@@ -26,13 +26,15 @@ const styles = StyleSheet.create({
   roomView: {
     margin: 15,
     width: 100,
+  },
+  roomButton: {
+    elevation: 2, // Android
     backgroundColor: '#903749',
     borderColor: '#53354a',
     borderRadius: 3,
-    borderWidth: 1,
-  },
-  roomButton: {
+    borderWidth: 2,
     padding: 5,
+    width: 100,
   },
   roomText: {
     fontSize: 20,

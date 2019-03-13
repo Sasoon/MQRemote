@@ -11,10 +11,8 @@ import {
   Dimensions,
   Switch,
 } from "react-native";
-import Svg, { Path } from 'react-native-svg'
 import Room from "./components/Room";
 import Toggle from "./components/Toggle";
-import Logo from "./components/Logo";
 
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 const bg =
@@ -63,16 +61,18 @@ export default class App extends Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>MQRemote</Text>  
-          <Logo />     
         </View>
         <View style={styles.roomContainer}>
-        <ImageBackground source={{uri: bg}} style={{width: '100%', height: '100%'}}> 
-          <Room roomNumber="104" start={this.start} switchValue={this.state.switchValue}/>
-          <Room roomNumber="118" start={this.start} switchValue={this.state.switchValue}/>
-          <Room roomNumber="206" start={this.start} switchValue={this.state.switchValue}/>
-          <Room roomNumber="208" start={this.start} switchValue={this.state.switchValue}/>
-          <Room roomNumber="214" start={this.start} switchValue={this.state.switchValue}/>
-          <Room roomNumber="316" start={this.start} switchValue={this.state.switchValue}/>          
+          <ImageBackground source={{uri: bg}} style={styles.roomBackground}> 
+            <View style={styles.mqLogoWrapper}>
+              <Image source={{uri: icon}} style={styles.mqLogo} resizeMode='contain' /> 
+            </View> 
+            <Room roomNumber="104" start={this.start} switchValue={this.state.switchValue}/>
+            <Room roomNumber="118" start={this.start} switchValue={this.state.switchValue}/>
+            <Room roomNumber="206" start={this.start} switchValue={this.state.switchValue}/>
+            <Room roomNumber="208" start={this.start} switchValue={this.state.switchValue}/>
+            <Room roomNumber="214" start={this.start} switchValue={this.state.switchValue}/>
+            <Room roomNumber="316" start={this.start} switchValue={this.state.switchValue}/>          
         </ImageBackground>
         </View>
         <View style={styles.switchContainer}>
@@ -90,32 +90,41 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
   },
+  // Room 
   roomContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
     margin: 10,
   },
+  roomBackground: {
+    width: '100%',
+    height: '72%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  // Switch 
   switchContainer: {
     flex: 5,
   },
-  // Header styles
+  // Logo
+  mqLogo: {
+    height: 100,
+    width: 200, 
+    marginLeft: 10,
+  },
+  mqLogoWrapper: {
+    height: 100,
+    width: 400, 
+  },
+  // Header 
   header: {
     margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  headerImage: {
-    height: 100,
-    width: 200, 
-    marginLeft: 10,
-    alignSelf: 'flex-start',
-  },
   headerText: {
     fontWeight: 'bold',
     fontFamily: 'Roboto',
-    fontSize: 30,
-    color: '#fff',
+    fontSize: 35,
+    color: '#000',
   }
 });

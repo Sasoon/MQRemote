@@ -55,7 +55,7 @@ export default class App extends Component {
             <Room roomNumber="206" start={this.start} switchValue={this.state.switchValue}/>
             <Room roomNumber="208" start={this.start} switchValue={this.state.switchValue}/>
             <Room roomNumber="214" start={this.start} switchValue={this.state.switchValue}/>
-            <Room roomNumber="316" start={this.start} switchValue={this.state.switchValue}/>          
+            <Room roomNumber="306" start={this.start} switchValue={this.state.switchValue}/>
         </ImageBackground>
         </View>
         <View style={styles.switchContainer}>

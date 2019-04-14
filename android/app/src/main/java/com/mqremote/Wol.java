@@ -22,12 +22,11 @@ import java.util.logging.Logger;
 public class Wol extends ReactContextBaseJavaModule  {
     private static Boolean isOn = false;
     static RequestQueue requestQueue;
-    static String URL = "http://10.41.73.121:4567/";
+    static String URL = "http://10.41.73.22:4567/";
     ReactApplicationContext reactContext;
 
     public Wol(ReactApplicationContext reactContext) {
         super(reactContext);
-        Log.wtf("sdfsdfsdfsdf", "SDfdeuhgkwegrfwuyergfwjueyfgwjueyrf");
         requestQueue = Volley.newRequestQueue(getReactApplicationContext().getApplicationContext());
     }
 
